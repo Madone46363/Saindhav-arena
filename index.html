@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlNBSU5ESEFWIEFSRU5BIj4KICA8dGl0bGU+U0FJTkRIQVYgQVJFTkE8L3RpdGxlPgogIDxyZWN0IHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2IiBmaWxsPSIjMEIwNzE0Ii8+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQsMTApIj4KICAgIDxwYXRoIGQ9Ik0xOTggNTggSDEwNCBDNzYgNTggNjQgNjggNjcgODIgQzcwIDk2IDg0IDEwMSAxMTAgMTA0IEwxNTggMTA5IEMxODAgMTExIDE5MCAxMTkgMTg4IDEzMiBMMTcyIDE0MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEI1Q0Y2IiBzdHJva2Utd2lkdGg9IjI1IiBzdHJva2UtbGluZWNhcD0ic3F1YXJlIiBzdHJva2UtbGluZWpvaW49Im1pdGVyIi8+CiAgICA8cG9seWdvbiBwb2ludHM9IjUyLDE1MCA4OCwxNTAgNjYsMTk4IDMwLDE5OCIgZmlsbD0iI0ZGRkZGRiIvPgogICAgPHBhdGggZD0iTTg0IDE5OCBMMTIyIDE0NCBMMTYwIDE5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIyIiBzdHJva2UtbGluZWNhcD0ic3F1YXJlIiBzdHJva2UtbGluZWpvaW49Im1pdGVyIi8+CiAgICA8cGF0aCBkPSJNMTA2IDE3OCBIMTM4IiBmaWxsPSJub25lIiBzdHJva2U9IiNENEFGMzciIHN0cm9rZS13aWR0aD0iOSIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIvPgogIDwvZz4KPC9zdmc+Cg=="/>
 <title>SAINDHAV ARENA — 84 Free Online Games</title>
 <style>
-:root{--bg:#0B0714;--bg2:#140D23;--ink:#FFFFFF;--muted:#B9B2C9;--line:#302343;--card:#1C1430;--gold:#D4AF37;--violet:#8B5CF6;--violet-dark:#6D28D9;--violet-light:#A78BFA;--lime:#7DB800;--coral:#8B5CF6;--teal:#0E9F87;--yellow:#E8C766;--pink:#FF8FB1;--blue:#A78BFA;--radius:14px;--radius-md:10px;--radius-sm:8px}
+:root{--bg:#0B0714;--bg2:#140D23;--ink:#FFFFFF;--muted:#B9B2C9;--line:#302343;--card:#1C1430;--gold:#D4AF37;--violet:#8B5CF6;--violet-dark:#6D28D9;--violet-light:#A78BFA;--lime:#7DB800;--coral:#8B5CF6;--teal:#0E9F87;--yellow:#E8C766;--pink:#FF8FB1;--blue:#A78BFA;--radius:14px;--radius-md:10px;--radius-sm:8px;--page-max:1340px;--page-pad:clamp(14px,3vw,32px);--page-inline:max(var(--page-pad),calc((100% - var(--page-max))/2 + var(--page-pad)))}
 *{box-sizing:border-box}
 html{scroll-behavior:auto}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent;overflow-x:clip}
@@ -18,18 +18,18 @@ button,input,select{font:inherit}
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 img,svg,video,canvas{max-width:100%}
 /* ===== Header (portal bar) ===== */
-.top{position:sticky;top:0;z-index:20;background:var(--bg2);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:10px clamp(14px,3vw,28px);gap:16px}
+.top{position:sticky;top:0;z-index:20;background:var(--bg2);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:8px var(--page-inline);gap:16px;width:100%}
 .logo{display:flex;align-items:center;flex:0 0 auto;line-height:0;background:#0B0714;border-radius:10px;padding:7px 14px;cursor:pointer}
 a.logo:hover{opacity:.92}
 .playerLogoLink{display:inline-flex;line-height:0;cursor:pointer;border-radius:8px}
 .gateLogoLink{display:block;width:fit-content;margin:0 auto;cursor:pointer;border-radius:10px}
 a.footerBrand{cursor:pointer}
 .logoImg{display:block;height:56px;width:auto}
-.nav{display:none;gap:22px;font-weight:600;font-size:14px;color:var(--muted)}
-@media(min-width:760px){.nav{display:flex}}
-.nav a{padding:6px 2px}
+.nav{display:none;gap:22px;font-weight:600;font-size:14px;color:var(--muted);align-items:center;flex:0 1 auto;min-width:0}
+@media(min-width:1100px){.nav{display:flex}}
+.nav a{padding:6px 2px;white-space:nowrap}
 .nav a:hover{color:var(--ink)}
-.cta{background:var(--coral);color:#fff;border:0;padding:10px 18px;border-radius:10px;font-weight:800;cursor:pointer;min-height:44px}
+.cta{background:var(--coral);color:#fff;border:0;padding:10px 18px;border-radius:10px;font-weight:800;cursor:pointer;min-height:44px;white-space:nowrap;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center}
 @media(max-width:520px){.logo{padding:6px 10px}.logoImg{height:46px}.cta{padding:9px 12px;font-size:14px}}
 @media(max-width:400px){.logo{padding:5px 8px;border-radius:8px}.logoImg{height:40px}.cta{padding:8px 11px;font-size:13px}.offBadge{font-size:12px}.flame{display:none}}
 .footerBrand{display:inline-flex;align-items:center;line-height:0;background:#0B0714;border-radius:8px;padding:6px 10px}
@@ -47,7 +47,7 @@ a.footerBrand{cursor:pointer}
 .aboutClose{color:#FFFFFF;font-weight:800;font-size:16px;margin-top:22px}
 @media(max-width:680px){.aboutBox{padding:22px 18px}.aboutBox h2{font-size:23px}}
 /* ===== Layout ===== */
-.wrap{max-width:1340px;margin:0 auto;padding:0 clamp(14px,3vw,32px)}
+.wrap{max-width:var(--page-max);margin:0 auto;padding:0 var(--page-pad);width:100%}
 #home.hide{display:none}
 #player{display:none;padding:22px 0 40px}
 #player.open{display:block}
@@ -234,30 +234,32 @@ input.txtin{width:100%;max-width:460px;display:block;margin:12px auto 0;padding:
 /* ===== Premium purple & white redesign (gold accents) ===== */
 :focus-visible{outline:3px solid var(--violet-light);outline-offset:2px}
 body{background:var(--bg)}
-.top{background:#140D23;border-bottom:1px solid var(--line);padding:8px max(clamp(14px,3vw,32px),calc((100% - 1340px)/2 + clamp(14px,3vw,32px)));flex-wrap:wrap}
+.top{background:#140D23;border-bottom:1px solid var(--line);padding:8px var(--page-inline);flex-wrap:wrap;row-gap:0}
 .logo{background:transparent;padding:0;border-radius:0}
 .logoImg{height:50px}
 .footerBrand{background:transparent;padding:0;border-radius:0}
 .footerLogoImg{height:46px}
 .nav{gap:26px;color:var(--muted)}
-.nav a{padding:8px 2px;border-bottom:2px solid transparent;transition:color .18s ease,border-color .18s ease}
+.nav a{padding:8px 2px;border-bottom:2px solid transparent;transition:color .18s ease,border-color .18s ease;display:inline-flex;align-items:center;min-height:44px;line-height:1.2}
 .nav a:hover{color:#FFFFFF}
 .nav a.active{color:var(--violet-light);border-bottom-color:var(--gold)}
-.topRight{display:flex;align-items:center;gap:10px;margin-left:auto}
+.topRight{display:flex;align-items:center;gap:10px;margin-left:auto;flex:0 1 auto;min-width:0}
+.topRight .acctWrap{min-width:0;flex:0 1 auto;display:inline-flex;align-items:center}
+.iconBtn,.menuBtn{flex:0 0 auto}
 .iconBtn{background:var(--card);border:1px solid var(--line);color:#FFFFFF;width:44px;height:44px;border-radius:10px;cursor:pointer;font-size:17px}
 .iconBtn:hover{border-color:var(--violet-light)}
 .recentLink{font-weight:700;font-size:14px;color:var(--muted);padding:8px 2px;white-space:nowrap}
 .recentLink:hover{color:var(--violet-light)}
-@media(max-width:900px){.recentLink{display:none}}
+@media(max-width:1239px){.recentLink{display:none}}
 .cta{background:var(--violet-dark);color:#FFFFFF;transition:background .18s ease}
 .cta:hover{background:#FFFFFF;color:#2A1650}
 .menuBtn{display:none;background:var(--card);border:1px solid var(--line);color:#FFFFFF;width:44px;height:44px;border-radius:10px;cursor:pointer;font-size:19px}
 .mobileNav{display:none;flex-basis:100%;flex-direction:column;border-top:1px solid var(--line);padding:8px 0 4px}
 .mobileNav.open{display:flex}
-.mobileNav a{padding:12px 4px;font-weight:700;color:var(--muted);border-bottom:1px solid var(--line)}
+.mobileNav a{padding:12px 0;font-weight:700;color:var(--muted);border-bottom:1px solid var(--line)}
 .mobileNav a:last-child{border-bottom:0}
 .mobileNav a:hover{color:var(--violet-light)}
-@media(max-width:759px){.menuBtn{display:block}}
+@media(max-width:1099px){.menuBtn{display:block}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .hero{position:relative;padding:38px 0 10px;animation:fadeUp .6s ease both}
 .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(520px 220px at 12% 0%,rgba(139,92,246,.16),transparent 65%),radial-gradient(460px 200px at 95% 20%,rgba(139,92,246,.08),transparent 65%);pointer-events:none}
@@ -318,14 +320,15 @@ body{background:var(--bg)}
 .whyCard h3{margin:0 0 8px;font-size:15px;letter-spacing:.05em;color:var(--violet-light)}
 .whyCard p{color:var(--muted);line-height:1.55;margin:0;font-size:14px}
 .aboutBox{border:1px solid var(--line);background:#140D23}
-.footer{display:block;margin-top:44px}
-.footTop{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:20px}
-.footDesc{color:var(--muted);line-height:1.55;font-size:14px;max-width:340px;margin:12px 0 0}
-.footLinks{display:flex;flex-direction:column;gap:10px;font-weight:700}
+.footer{display:block;margin-top:44px;width:100%}
+.footTop{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,3fr);gap:28px;align-items:start;padding-bottom:20px}
+.footTop>*{min-width:0}
+.footDesc{color:var(--muted);line-height:1.55;font-size:14px;max-width:400px;margin:12px 0 0;text-align:left}
+.footLinks{display:flex;flex-direction:column;gap:10px;font-weight:700;align-items:flex-start;text-align:left}
 .footLinks a:hover{color:var(--violet-light)}
-.footInfo{display:flex;flex-direction:column;gap:10px;font-weight:700;color:#FFFFFF}
+.footInfo{display:flex;flex-direction:column;gap:10px;font-weight:700;color:#FFFFFF;align-items:flex-start;text-align:left}
 .footInfo small{color:var(--muted);font-weight:600;max-width:240px;line-height:1.5}
-.footBottom{border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.footBottom{border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;align-items:center;gap:8px 16px;flex-wrap:wrap;text-align:left}
 .modeBtn.active{background:var(--violet-dark);color:#FFFFFF;border-color:var(--violet-dark)}
 .pbtn.on{background:var(--violet-dark);color:#FFFFFF;border-color:var(--violet-dark)}
 @media(max-width:859px){.hero{text-align:center}.heroBtns{justify-content:center}.hero p{margin-inline:auto}.stats{justify-content:center}.offBadge{margin-inline:auto}}
@@ -412,7 +415,7 @@ textarea.txtin{font-family:inherit;resize:vertical;line-height:1.5}
 .fcard .pad,.gcard .pad{display:flex;flex-direction:column;flex:1}
 .cardBtns{margin-top:auto}
 .featured,.grid{align-items:stretch}
-.topRight{flex-wrap:wrap;justify-content:flex-end}
+.topRight{flex-wrap:nowrap;justify-content:flex-end}
 .stage{padding-bottom:max(18px,env(safe-area-inset-bottom))}
 .controls{padding-bottom:env(safe-area-inset-bottom)}
 .footLinks a,.footInfo a{color:inherit}
@@ -458,7 +461,25 @@ button.score{cursor:pointer;font-family:inherit}
 .stage{overflow:hidden}
 .playViewport{position:relative;overflow:hidden;border-radius:var(--radius-md);background:var(--gamebg);min-height:300px}
 .playViewport #gameArea{min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 0}
-.playViewport .overlay{position:absolute;inset:0;max-height:100%;overflow-y:auto;justify-content:center;border-radius:var(--radius-md);z-index:6}
+.playViewport .overlay{position:absolute;inset:0;overflow-y:auto;justify-content:center;border-radius:var(--radius-md);z-index:6}
+.playViewport .overlay .ovCard{margin:auto}
+/* Setup screen: in normal flow, never inside the fixed-height viewport.
+   The card sizes to its full content — no absolute positioning over an
+   empty game area, no internal scrollbar, no black void around it. */
+.playViewport #startOverlay{position:relative;inset:auto;height:auto;background:transparent;padding:8px 0 4px;overflow:visible;justify-content:flex-start}
+.playViewport #startOverlay .ovCard{margin:0 auto}
+.playViewport:has(> #startOverlay:not([hidden])){min-height:0}
+.playViewport:has(> #startOverlay:not([hidden])) #gameArea{min-height:0;padding:0}
+/* While the setup screen is showing, the gameplay toolbar and live stat
+   tiles are hidden: Pause/Restart/Score belong to a running game, and
+   showing them above the setup card duplicated its controls. The level
+   bar stays visible so Level, Difficulty and Objective are always clear. */
+#stage.setupMode .stageTop,#stage.setupMode .statTiles{display:none}
+#stage.setupMode .levelBar{margin-bottom:14px}
+/* Sticky-header offset: scrolled-to content (level bar, stage, panels)
+   can never tuck underneath the sticky portal header. */
+html{scroll-padding-top:96px}
+#player,#stage,.gpanel{scroll-margin-top:96px}
 .playViewport .overlay .startArt{width:76px;height:76px;font-size:40px;margin-bottom:10px}
 .playViewport .overlay h3{font-size:23px}
 .playViewport .overlay p{margin-bottom:6px;font-size:14.5px}
@@ -519,7 +540,8 @@ input[type=range].rng{width:min(100%,220px);accent-color:var(--violet)}
 .optRow .pbtn{flex:1 1 auto}
 .optLbl{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:800;margin:0 0 6px}
 .playViewport .overlay{background:rgba(11,7,20,.92);padding:14px}
-.ovCard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px clamp(16px,4vw,30px);max-width:540px;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;max-height:100%;overflow-y:auto}
+.ovCard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px clamp(16px,4vw,30px);max-width:540px;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center}
+.playViewport #startOverlay .ovCard{max-width:780px}
 .ovCard p{color:var(--muted);line-height:1.55;max-width:480px;margin:0 0 10px}
 .pThumb{width:68px;height:42px;border-radius:8px;overflow:hidden;flex:0 0 auto;border:1px solid var(--line);background:var(--bg2)}
 .pThumb svg{width:100%;height:100%;display:block}
@@ -544,6 +566,34 @@ input[type=range].rng{width:min(100%,220px);accent-color:var(--violet)}
 #lvlOverlay .ovCard{border-color:var(--gold)}
 .lvlBig{font-size:30px;font-weight:900;color:var(--gold);margin:0 0 4px}
 @media(max-width:680px){.lvlObj{flex-basis:100%}.diffBtn{flex-basis:calc(33.33% - 6px);max-width:none;padding:8px 4px;font-size:14px}}
+/* ===== Header & footer alignment: one margin system at every width ===== */
+/* Header, .wrap content and footer share --page-max / --page-pad / --page-inline,
+   so their left and right edges line up at 320-1920px with no separate formulas. */
+.logo{align-items:center}
+.acctBtn{display:inline-flex;align-items:center;justify-content:center}
+@media(max-width:900px){
+.footTop{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.footTop>*:first-child{grid-column:1/-1}
+.footDesc{max-width:560px}
+}
+@media(max-width:640px){
+.top{row-gap:8px;padding-top:10px;padding-bottom:10px}
+.topRight{order:3;flex:1 1 100%;margin-left:0;justify-content:flex-start;gap:8px}
+.topRight .menuBtn{margin-left:auto}
+.mobileNav{order:4}
+.acctBtn{max-width:104px}
+.footBottom{flex-direction:column;align-items:flex-start;flex-wrap:nowrap}
+}
+@media(max-width:560px){
+.footTop{grid-template-columns:minmax(0,1fr)}
+.footTop>*:first-child{grid-column:auto}
+.footDesc{max-width:400px}
+}
+@media(max-width:380px){
+.acctBtn{max-width:88px;padding:9px 8px}
+.cta{padding:8px 10px}
+.topRight{gap:6px}
+}
 </style>
 </head>
 <body>
@@ -874,13 +924,13 @@ function accentInk(hex){try{const n=parseInt(hex.slice(1),16),r=(n>>16)&255,g=(n
 function idHash(str){let h=7;for(let i=0;i<str.length;i++){h=(h*31+str.charCodeAt(i))>>>0}return h}
 function thumbSVG(g){const h=idHash(g.id);const shapes=['circle','rect','tri','bar'];let deco='';for(let i=0;i<6;i++){const x=14+((h>>(i*3))%170),y=10+((h>>(i*2+1))%24),t=shapes[(h>>i)%4],o=(0.25+((h>>i)%5)*0.12).toFixed(2);
   if(t==='circle')deco+='<circle cx="'+x+'" cy="'+y+'" r="5" fill="none" stroke="'+g.bg+'" stroke-width="2" opacity="'+o+'"/>';
-  else if(t==='rect')deco+='<rect x="'+(x-5)+'" y="'+(y-5)+'" width="10" height="10" rx="2" fill="none" stroke="'+g.bg+'" stroke-width="2" opacity="'+o+'" transform="rotate('+((h>>i)%40-20)+' '+x+' '+y+'")"/>';
+  else if(t==='rect')deco+='<rect x="'+(x-5)+'" y="'+(y-5)+'" width="10" height="10" rx="2" fill="none" stroke="'+g.bg+'" stroke-width="2" opacity="'+o+'" transform="rotate('+((h>>i)%40-20)+' '+x+' '+y+')"/>';
   else if(t==='tri')deco+='<path d="M'+x+' '+(y-6)+' L'+(x+6)+' '+(y+5)+' L'+(x-6)+' '+(y+5)+' Z" fill="none" stroke="'+g.bg+'" stroke-width="2" opacity="'+o+'"/>';
   else deco+='<rect x="'+(x-7)+'" y="'+(y-2)+'" width="14" height="4" rx="2" fill="'+g.bg+'" opacity="'+o+'"/>'}
   return '<svg viewBox="0 0 200 120" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration for '+g.name+'" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="120" fill="#140D23"/><rect width="200" height="120" fill="'+g.bg+'" opacity="0.20"/>'+deco+'<circle cx="100" cy="62" r="27" fill="'+g.bg+'"/><text x="100" y="76" font-size="30" text-anchor="middle">'+g.icon+'</text></svg>'}
 function applyAccent(g){const pl=document.getElementById('player');if(!pl||!g)return;pl.style.setProperty('--ga',g.bg);pl.style.setProperty('--gai',accentInk(g.bg));const th=document.getElementById('pThumb');if(th)th.innerHTML=thumbSVG(g)}
 let lastTileText='';
-function renderStatTiles(t){if(t===lastTileText)return;lastTileText=t;const wrap=document.getElementById('statTiles');if(!wrap)return;const segs=String(t).split('•').map(x=>x.trim()).filter(Boolean).slice(0,4);
+function renderStatTiles(t){if(t===lastTileText)return;lastTileText=t;const wrap=document.getElementById('statTiles');if(!wrap)return;const segs=String(t).split('•').map(x=>x.trim()).filter(Boolean).slice(0,4);if(segs.length<=1){wrap.innerHTML='';wrap.style.display='none';return}wrap.style.display='';
   let html=segs.map(seg=>{const ci=seg.indexOf(':');if(ci>0&&ci<26)return '<div class="tile"><span>'+seg.slice(0,ci)+'</span><b>'+seg.slice(ci+1).trim()+'</b></div>';return '<div class="tile"><span>Live</span><b>'+seg+'</b></div>'}).join('');
   if(current&&BEST[current.id]!==undefined)html+='<div class="tile bestTile"><span>Best</span><b>'+BEST[current.id]+'</b></div>';
   wrap.innerHTML=html||'<div class="tile"><span>Live</span><b>Ready</b></div>'}
@@ -922,7 +972,7 @@ function showGameOver(t){if(!current)return;LVL_BLOCK=true;const eb=document.get
 function nextLevel(){if(!current)return;RUN_SCORE+=LVL_SCORE;LEVEL++;WINS_THIS_LEVEL=0;LEVEL_DONE=false;LVL_BLOCK=false;hideLvl();const pr=progRec(current.id);if(pr){pr.current_level=LEVEL;pr.highest_level_unlocked=Math.max(pr.highest_level_unlocked||1,LEVEL);pr.updated_at=Date.now();persistProfile()}PAUSED=false;syncPauseUI();startGame(current.id)}
 function retryLevel(){if(!current)return;LEVEL_DONE=false;LVL_BLOCK=false;WINS_THIS_LEVEL=0;hideLvl();PAUSED=false;syncPauseUI();startGame(current.id)}
 function campaignMsgHook(t,kind){if(!current||!t||LEVEL_DONE)return;if(kind==='win'){WINS_THIS_LEVEL++;if(WINS_THIS_LEVEL>=winsNeeded())levelComplete();else{showToast('Round won — '+WINS_THIS_LEVEL+' of '+winsNeeded()+' for Level '+LEVEL);updateLevelBar()}}else if(kind==='lose'&&TERMINAL_LOSE.indexOf(current.id)>=0){LEVEL_DONE=true;showGameOver(t)}}
-function showStart(){if(!current)return;clearFx();hideInstr();hideLvl();LVL_BLOCK=false;LEVEL=START_LEVEL;PAUSED=false;syncPauseUI();const g=current;document.getElementById('gameArea').innerHTML='';document.getElementById('gameControls').innerHTML='';setMsg('');setScore('Score: 0');const ov=document.getElementById('startOverlay');const best=(BEST[g.id]!==undefined)?'<p class="startBest">Best score: '+BEST[g.id]+'</p>':'';const prO=progRec(g.id);const prog=(prO&&prO.attempts>0)?'<p class="startHow">Saved on this device — Attempts: '+prO.attempts+' • Completed/Won: '+prO.completions+(prO.last_played_at?' • Last played '+new Date(prO.last_played_at).toLocaleDateString():'')+'</p>':'';ov.innerHTML='<div class="ovCard"><div class="startArt" style="background:'+g.bg+'">'+g.icon+'</div><h3>'+g.name+'</h3><p>'+g.desc+'</p><p class="startHow">'+(playMode==='local'?(LOCAL_HOW[g.id]||g.how):g.how)+'</p>'+best+prog+'<div class="diffRow" role="group" aria-label="Difficulty"><button class="diffBtn'+(DIFF==='easy'?' sel':'')+'" onclick="setDiff(\'easy\')">Easy<small>Slower pace, gentler targets</small></button><button class="diffBtn'+(DIFF==='medium'?' sel':'')+'" onclick="setDiff(\'medium\')">Medium<small>Balanced default</small></button><button class="diffBtn'+(DIFF==='hard'?' sel':'')+'" onclick="setDiff(\'hard\')">Hard<small>Faster pace, higher targets</small></button></div><div class="setupRow"><label for="startLvlSel">Starting level</label><select id="startLvlSel" onchange="START_LEVEL=+this.value">'+[1,2,3,4,5,6,7,8,9,10].map(function(n){return '<option value="'+n+'"'+(START_LEVEL===n?' selected':'')+'>Level '+n+'</option>'}).join('')+'</select></div><p class="startHow">'+objectiveText()+'</p><div class="overlayBtns"><button class="btn primary" onclick="beginPlay()">\u25B6 Start Game</button><button class="btn" onclick="focusPanel(\'panelProgress\')">Stats</button><button class="btn" onclick="focusPanel(\'panelOptions\')">Options</button><button class="btn" onclick="focusPanel(\'panelHelp\')">Help</button><button class="btn" onclick="closeGame()">Back to Games</button></div></div>';ov.hidden=false;lastTileText='';renderStatTiles('Score: 0');refreshGamePanels();updateLevelBar();renderRelated(g)}
+function showStart(){if(!current)return;clearFx();hideInstr();hideLvl();LVL_BLOCK=false;LEVEL=START_LEVEL;PAUSED=false;syncPauseUI();const stgEl=document.getElementById('stage');if(stgEl)stgEl.classList.add('setupMode');const g=current;document.getElementById('gameArea').innerHTML='';document.getElementById('gameControls').innerHTML='';setMsg('');setScore('Score: 0');const ov=document.getElementById('startOverlay');const best=(BEST[g.id]!==undefined)?'<p class="startBest">Best score: '+BEST[g.id]+'</p>':'';const prO=progRec(g.id);const prog=(prO&&prO.attempts>0)?'<p class="startHow">Saved on this device — Attempts: '+prO.attempts+' • Completed/Won: '+prO.completions+(prO.last_played_at?' • Last played '+new Date(prO.last_played_at).toLocaleDateString():'')+'</p>':'';ov.innerHTML='<div class="ovCard"><div class="startArt" style="background:'+g.bg+'">'+g.icon+'</div><h3>'+g.name+'</h3><p>'+g.desc+'</p><p class="startHow">'+(playMode==='local'?(LOCAL_HOW[g.id]||g.how):g.how)+'</p>'+best+prog+'<div class="diffRow" role="group" aria-label="Difficulty"><button class="diffBtn'+(DIFF==='easy'?' sel':'')+'" onclick="setDiff(\'easy\')">Easy<small>Slower pace, gentler targets</small></button><button class="diffBtn'+(DIFF==='medium'?' sel':'')+'" onclick="setDiff(\'medium\')">Medium<small>Balanced default</small></button><button class="diffBtn'+(DIFF==='hard'?' sel':'')+'" onclick="setDiff(\'hard\')">Hard<small>Faster pace, higher targets</small></button></div><div class="setupRow"><label for="startLvlSel">Starting level</label><select id="startLvlSel" onchange="START_LEVEL=+this.value">'+[1,2,3,4,5,6,7,8,9,10].map(function(n){return '<option value="'+n+'"'+(START_LEVEL===n?' selected':'')+'>Level '+n+'</option>'}).join('')+'</select></div><p class="startHow">'+objectiveText()+'</p><div class="overlayBtns"><button class="btn primary" onclick="beginPlay()">\u25B6 Start Game</button></div></div>';ov.hidden=false;lastTileText='';renderStatTiles('Score: 0');refreshGamePanels();updateLevelBar();renderRelated(g)}
 function beginPlay(){const ov=document.getElementById('startOverlay');if(ov)ov.hidden=true;sfxClick();LEVEL=START_LEVEL;RUN_SCORE=0;WINS_THIS_LEVEL=0;LEVEL_DONE=false;LVL_BLOCK=false;hideLvl();if(current)startGame(current.id)}
 function renderRelated(g){const title=document.getElementById('relatedTitle');const grid=document.getElementById('relatedGrid');if(!grid)return;const rel=GAMES.filter(x=>x.cat===g.cat&&x.id!==g.id).sort((a,b)=>b.hot-a.hot).slice(0,4);title.textContent=rel.length?('More '+g.cat+' games'):'';grid.innerHTML=rel.map(x=>'<article class="recentCard"><button class="recentMain" onclick="openGame(\''+x.id+'\')"><span class="recentArt" style="background:'+x.bg+'">'+x.icon+'</span><span><b>'+x.name+'</b><span>'+x.cat+'</span></span></button></article>').join('')}
 function syncPauseUI(){const b=document.getElementById('pauseBtn');if(b){b.textContent=PAUSED?'\u25B6 Resume':'\u23F8 Pause';b.classList.toggle('on',PAUSED)}const po=document.getElementById('pauseOverlay');if(po)po.hidden=!PAUSED}
@@ -1011,12 +1061,12 @@ function openGame(id){
   playMode='single';const g=GAMES.find(x=>x.id===id);current=g;gameReturn='home';VIEWS.forEach(v=>{const el=document.getElementById(v);if(el&&el.classList.contains('open'))gameReturn=v});RECENT=[id,...RECENT.filter(x=>x!==id)].slice(0,6);const pp=curProfile();if(pp)pp.lastPlayed[id]=Date.now();persistProfile();renderRecent();PAUSED=false;document.getElementById('pauseBtn').textContent='⏸ Pause';document.getElementById('pauseBtn').classList.remove('on');renderModeBar(id);
   const home=document.getElementById('home'),player=document.getElementById('player');
   applyAccent(g);document.getElementById('pTitle').textContent=g.icon+' '+g.name;document.getElementById('pCat').textContent=g.cat;document.getElementById('pHow').textContent=g.how;document.getElementById('pHow').classList.add('hideHow');hideInstr();document.getElementById('pDesc').textContent=g.desc;syncSoundBtns();
-  const show=()=>{home.classList.add('hide');home.classList.remove('page-out');hideAllViews();player.classList.add('open');player.classList.remove('page-in');void player.offsetWidth;player.classList.add('page-in');window.scrollTo({top:0,behavior:REDUCED?'auto':'smooth'});showStart()};
+  const show=()=>{home.classList.add('hide');home.classList.remove('page-out');hideAllViews();player.classList.add('open');player.classList.remove('page-in');void player.offsetWidth;player.classList.add('page-in');window.scrollTo({top:0,behavior:'auto'});showStart()};
   if(REDUCED){show()}else{home.classList.add('page-out');setTimeout(show,150)}
 }
-function closeGame(){persistProfile(true);clearFx();hideInstr();hideLvl();LVL_BLOCK=false;LEVEL_DONE=false;PAUSED=false;syncPauseUI();current=null;const so=document.getElementById('startOverlay');if(so)so.hidden=true;try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}const home=document.getElementById('home'),player=document.getElementById('player');player.classList.remove('open','page-in');if(gameReturn&&gameReturn!=='home'){openView(gameReturn);return}home.classList.remove('hide');home.classList.remove('page-in');void home.offsetWidth;home.classList.add('page-in');window.scrollTo({top:0,behavior:REDUCED?'auto':'smooth'})}
+function closeGame(){const stgEl3=document.getElementById('stage');if(stgEl3)stgEl3.classList.remove('setupMode');persistProfile(true);clearFx();hideInstr();hideLvl();LVL_BLOCK=false;LEVEL_DONE=false;PAUSED=false;syncPauseUI();current=null;const so=document.getElementById('startOverlay');if(so)so.hidden=true;try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}const home=document.getElementById('home'),player=document.getElementById('player');player.classList.remove('open','page-in');if(gameReturn&&gameReturn!=='home'){openView(gameReturn);return}home.classList.remove('hide');home.classList.remove('page-in');void home.offsetWidth;home.classList.add('page-in');window.scrollTo({top:0,behavior:'auto'})}
 function restartCurrent(){hideInstr();hideLvl();LVL_BLOCK=false;LEVEL_DONE=false;WINS_THIS_LEVEL=0;PAUSED=false;syncPauseUI();const so=document.getElementById('startOverlay');if(so)so.hidden=true;const eb=document.getElementById('endBar');if(eb)eb.hidden=true;if(current)startGame(current.id);else if(restartFn)restartFn()}
-function startGame(id){clearFx();PAUSED=false;syncPauseUI();LEVEL_DONE=false;LVL_BLOCK=false;LVL_SCORE=0;hideLvl();updateLevelBar();const eb2=document.getElementById('endBar');if(eb2)eb2.hidden=true;document.getElementById('pauseBtn').textContent='⏸ Pause';document.getElementById('gameControls').innerHTML='';setMsg('');const area=document.getElementById('gameArea');area.innerHTML='';const prS=progRec(id);if(prS){prS.attempts++;prS.current_level=LEVEL;prS.highest_level_unlocked=Math.max(prS.highest_level_unlocked||1,LEVEL);prS.last_played_at=Date.now();prS.updated_at=Date.now();persistProfile()}if(typeof refreshGamePanels==='function')refreshGamePanels();const fn=(playMode==='local'&&typeof REG_LOCAL!=='undefined'&&REG_LOCAL[id])?REG_LOCAL[id]:REG[id];if(fn){try{fn(area)}catch(e){if(window.console)console.error('SAINDHAV ARENA game failed to start:',id,e);area.innerHTML='<p class="hint">This game hit a snag starting. Your other games and progress are unaffected.</p><div class="controls"><button onclick="restartCurrent()">↻ Retry</button><button onclick="closeGame()">Back to Games</button></div>'}}restartFn=()=>startGame(id)}
+function startGame(id){const stgEl2=document.getElementById('stage');if(stgEl2)stgEl2.classList.remove('setupMode');clearFx();PAUSED=false;syncPauseUI();LEVEL_DONE=false;LVL_BLOCK=false;LVL_SCORE=0;hideLvl();updateLevelBar();const eb2=document.getElementById('endBar');if(eb2)eb2.hidden=true;document.getElementById('pauseBtn').textContent='⏸ Pause';document.getElementById('gameControls').innerHTML='';setMsg('');const area=document.getElementById('gameArea');area.innerHTML='';const prS=progRec(id);if(prS){prS.attempts++;prS.current_level=LEVEL;prS.highest_level_unlocked=Math.max(prS.highest_level_unlocked||1,LEVEL);prS.last_played_at=Date.now();prS.updated_at=Date.now();persistProfile()}if(typeof refreshGamePanels==='function')refreshGamePanels();const fn=(playMode==='local'&&typeof REG_LOCAL!=='undefined'&&REG_LOCAL[id])?REG_LOCAL[id]:REG[id];if(fn){try{fn(area)}catch(e){if(window.console)console.error('SAINDHAV ARENA game failed to start:',id,e);area.innerHTML='<p class="hint">This game hit a snag starting. Your other games and progress are unaffected.</p><div class="controls"><button onclick="restartCurrent()">↻ Retry</button><button onclick="closeGame()">Back to Games</button></div>'}}restartFn=()=>startGame(id)}
 function dpadHTML(){return `<div class="dpad"><button class="up" data-dir="up" aria-label="Up">↑</button><button class="left" data-dir="left" aria-label="Left">←</button><button class="down" data-dir="down" aria-label="Down">↓</button><button class="right" data-dir="right" aria-label="Right">→</button></div>`}
 function bindDpad(c,fn){c.querySelectorAll('[data-dir]').forEach(b=>{b.addEventListener('click',()=>fn(b.dataset.dir));b.addEventListener('touchstart',e=>{e.preventDefault();fn(b.dataset.dir)},{passive:false})})}
 function mkCanvas(area,w,h){area.innerHTML=`<canvas id="cv" width="${w}" height="${h}"></canvas>`;const cv=document.getElementById('cv');return[cv,cv.getContext('2d')]}
@@ -1448,7 +1498,7 @@ REG.checkers=function(area){
   function cpuTurn(){busy=false;const pieces=b.map((v,i)=>v&&v.toLowerCase()==='c'?i:null).filter(v=>v!==null);
     let options=[];pieces.forEach(i=>movesFor(i,'c').forEach(m=>options.push({from:i,...m})));
     if(!options.length){over=true;setMsg('CPU has no moves — you win!','win');celebrate();render();return}
-    const cap=options.filter(o=>o.cap!==null);const pick=(cap.length?cap:options)[((Math.random()*(cap.length?cap:options).length)|0)];
+    const cap=options.filter(o=>o.cap!==null);let tier=(typeof DIFF!=='undefined')?DIFF:'medium';if(typeof LEVEL!=='undefined'){if(LEVEL>=4&&tier==='easy')tier='medium';else if(LEVEL>=3&&tier==='medium')tier='hard'}let pool=options;if(tier==='medium')pool=cap.length?cap:options;else if(tier==='hard'){const kingMoves=options.filter(o=>((o.to/8)|0)===7);pool=cap.length?cap:(kingMoves.length?kingMoves:options)}const pick=pool[((Math.random()*pool.length)|0)];
     b[pick.to]=b[pick.from];b[pick.from]='';if(pick.cap!==null)b[pick.cap]='';if(((pick.to/8)|0)===7&&b[pick.to]==='c')b[pick.to]='C';render()}
   btns.forEach(btn=>btn.onclick=()=>{if(over||busy)return;const i=+btn.dataset.i;
     if(sel!==null){const m=movesFor(sel,'p').find(t=>t.to===i);if(m){b[i]=b[sel];b[sel]='';if(m.cap!==null)b[m.cap]='';if(((i/8)|0)===0&&b[i]==='p')b[i]='P';sel=null;render();busy=true;later(cpuTurn,420);return}}
