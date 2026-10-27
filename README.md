@@ -1,17 +1,20 @@
 # SAINDHAV ARENA
 
-Free online games arcade with 59 fully playable browser games, no download, no mandatory sign-up for browsing or guest play.
+Free online games arcade with 84 fully playable browser games, no download, no mandatory sign-up for browsing or guest play.
 
-Latest version: premium purple/white/gold design, QA-tested, homepage-first optional login.
+Latest version: premium purple/white/gold design, brand-only website content, Instructions button for every game, unified alignment and corners, and progressive levels with Easy/Medium/Hard difficulty for every game.
 
 - Brand: main background #0B0714, secondary #140D23, card #1C1430, primary purple #8B5CF6, bright purple accent #A78BFA, white text #FFFFFF, secondary text #B9B2C9, gold accent #D4AF37, borders #302343. SA logo recreated from the uploaded SA monogram shape (purple S, white A, small gold crossbar).
+- Website content is brand-only: the site itself does not mention GitHub, Cloudflare, repositories, deployments, or project-work/QA processes. This README is repo documentation, not website content.
 - Homepage first: site opens on the homepage as a Guest profile, no forced login gate. Login opens only from the account menu, cancel/success returns to the previous page, invalid email shows a clear in-place error.
 - Email profiles in this static build are unverified and device-local only, clearly labelled in the site. Supabase is not yet connected, so there is no cross-device sync or verified account yet.
-- QA: 59/59 games flow-tested in a headless Chromium harness (open, start, input, pause, resume, restart, exit, reopen) with 0 console errors in that harness, 11/11 local 2-player modes launched, no horizontal overflow at 320-2560px widths, QA Report page included. A timer leak (setTimeout bypassing pause/cleanup) was fixed at source.
-- Player counts (real, from catalog): Single Player 59 games, 2 Players 11 local games, 3/4/5/6 Players 0 games — 3-6 player modes and 500+ games are later staged work, not claimed now.
-- Online multiplayer: not implemented in this build. Local 2-player modes only where actually implemented.
-- Progress: best score, attempts, completions, last played per game per email/guest profile, saved at checkpoints, flushed on exit/switch/sign-out. No levels invented for games without a level system.
-- Known limitation: the site still displays "OFFLINE READY" / "Offline" badges, but true PWA (manifest, service worker, install) is NOT implemented in this static build. Do not treat those badges as installable offline PWA until manifest + service worker are added in a real deployment and tested.
+- Games: 84 games, including the original 59 plus a later batch (including Ludo Kingdom and Carrom Clash). Each game has its own logo/icon, accent colour, and illustration, with the same card/panel layout. Galaxy Invaders has 3 lives in this version, with alien speed/rows scaling by level and difficulty.
+- Levels and difficulty: every game has a setup screen with Easy/Medium/Hard cards, Starting Level 1-10, and Start Game; a level bar during play; per-game level objectives (win-type, score-target, or time-threshold where applicable); a gold Level Complete screen with Continue preserving run score; and a Game Over screen with final score, highest level reached, Retry, and Back to Games where a loss ends the run. Local multiplayer is preserved, with progression per match.
+- Honest testing note for this version: all 7 script blocks passed node syntax checks and a structural pass confirmed all 84 games resolve a level objective and all onclick handlers resolve. The latest levels/difficulty build did NOT manually play-test all 84 games in a live browser in that pass, so per-game gameplay, Pause/Resume, and local multiplayer turn order for that build are NOT TESTED, not claimed as PASS. Earlier builds had flow-tested the original 59 games in a headless harness; that is not a substitute for testing this version's new level/difficulty layer on every game.
+- Player counts (real, from catalog at Stage 3): Single Player 84 games, local multiplayer 14 games, Ludo the only 3- and 4-player local game, 5-6 players 0 games. 500+ games are later staged work, not claimed now.
+- Online multiplayer: not implemented in this build. Local multiplayer only where actually implemented, labelled as not available for online play in plain brand terms in the site.
+- Progress: best score, attempts, completions, last played per game per email/guest profile, saved at checkpoints, flushed on exit/switch/sign-out.
+- Known limitation: true PWA (manifest, service worker, install) is NOT implemented in this static build. Do not treat any offline wording as installable offline PWA until manifest + service worker are added in a real deployment and tested.
 
 ## Deploy on Cloudflare Pages
 
