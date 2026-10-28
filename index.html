@@ -591,6 +591,16 @@ input[type=range].rng{width:min(100%,220px);accent-color:var(--violet)}
 .setupRow select{padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--bg);color:#FFFFFF;min-height:44px;font-weight:700}
 #lvlOverlay{z-index:8}
 #lvlOverlay .ovCard{border-color:var(--gold)}
+#resultOverlay .ovCard{border-color:var(--gold)}
+#resultOverlay{z-index:8}
+.resBig.win{color:#2BD9B4}
+.resBig.lose,.resBig.over{color:#FF9A85}
+.resBig.draw{color:var(--gold)}
+.resStats{font-weight:800;color:var(--ink);margin:2px 0 4px}
+#liveStatus{display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline;justify-content:center;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:12px;min-height:52px;box-sizing:border-box;max-width:100%}
+#lsMain{font-size:17px;font-weight:900;color:var(--ink);line-height:1.3;min-width:0;overflow-wrap:break-word}
+#lsMeta{font-size:13px;font-weight:700;color:var(--muted);line-height:1.35;min-width:0;overflow-wrap:break-word}
+@media(max-width:680px){#lsMain{font-size:16px}#liveStatus{justify-content:flex-start;text-align:left}}
 .lvlBig{font-size:30px;font-weight:900;color:var(--gold);margin:0 0 4px}
 @media(max-width:680px){.lvlObj{flex-basis:100%}.diffBtn{flex-basis:calc(33.33% - 6px);max-width:none;padding:8px 4px;font-size:14px}}
 /* ===== Header & footer alignment: one margin system at every width ===== */
@@ -649,6 +659,7 @@ canvas{height:auto}
 .favBtn{display:flex;align-items:center;justify-content:center;line-height:1;padding:0;text-align:center}
 .removeBtn{display:flex;align-items:center;justify-content:center;line-height:1;flex:0 0 44px}
 .pbtn,.btn,.back,.modeBtn,.pill,.cta{display:inline-flex;align-items:center;justify-content:center;gap:6px;line-height:1.3;text-align:center}
+.btn[hidden],.pbtn[hidden]{display:none}
 .pbtns .pbtn,.controls button,.optRow .pbtn{line-height:1.3}
 .catIcon,.whyIcon{display:block;line-height:1;flex:0 0 auto}
 .recentArt,.startArt,.overlay .startArt{line-height:1;overflow:hidden;flex:0 0 auto}
@@ -661,6 +672,31 @@ canvas{height:auto}
 .miniRow span{line-height:1.35}
 .tag{line-height:1.4}
 .score{line-height:1.35}
+/* ===== Game-open stability: fixed, flexible play screen =====
+   While a game is running (body.playing) the board/canvas area takes
+   no touch gestures for the page: drags and swipes play the game, they
+   never scroll, bounce or shift the page. Setup (before Start) and all
+   non-game pages keep normal scrolling. */
+html,body{overscroll-behavior:none}
+.playViewport .overlay{overscroll-behavior:contain}
+#gameArea,#gameArea *,#gameControls,#gameControls *,#gameControls .dpad,#gameControls .dpad *{touch-action:none}
+#gameArea{width:100%;min-width:0}
+#gameArea .bgrid,#gameArea canvas{margin-inline:auto}
+/* Reserved stat-tile height: tiles appearing/updating as the score
+   format changes can no longer push the board down or pull it up. */
+.statTiles{min-height:76px;align-content:start}
+@media(max-width:680px){.statTiles{min-height:68px}}
+/* The win/lose bar keeps its space reserved while hidden, so the
+   on-screen controls below it never jump when a game ends. */
+#endBar[hidden]{display:flex;visibility:hidden}
+/* Score read-out keeps a stable width while its number changes. */
+.stageTop .score{font-variant-numeric:tabular-nums}
+@media(min-width:561px){.stageTop .score{min-width:150px}}
+/* Board fit: board grids and canvases scale to the stage width on
+   every screen, centred, never overflowing, never stretched. */
+.playViewport img,.playViewport svg{max-width:100%}
+#gameArea .ludoGrid,#gameArea .mcqGrid{width:min(100%,520px)}
+@media(max-width:680px){.playViewport{min-height:0}.controls button{min-height:52px}}
 </style>
 </head>
 <body>
@@ -798,7 +834,7 @@ canvas{height:auto}
   <div class="playerHead"><a class="playerLogoLink" href="#home" onclick="navGo('home');return false" aria-label="SAINDHAV ARENA Home" title="SAINDHAV ARENA Home"><img class="playerLogo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MjAgMjQwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlNBSU5ESEFWIEFSRU5BIj4KICA8dGl0bGU+U0FJTkRIQVYgQVJFTkE8L3RpdGxlPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyLDIpIj4KICAgIDxwYXRoIGQ9Ik0zMzYgMjQgSDIyNCBDMjAwIDI0IDE5MCAzMiAxOTIgNDIgQzE5NCA1MiAyMDYgNTYgMjI4IDU4IEwyOTIgNjMgQzMxMiA2NSAzMjAgNzEgMzE4IDgxIEwzMDUgOTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhCNUNGNiIgc3Ryb2tlLXdpZHRoPSIxOSIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIvPgogICAgPHBvbHlnb24gcG9pbnRzPSIxNzYsODIgMjA4LDgyIDE5MiwxMTAgMTYwLDExMCIgZmlsbD0iI0ZGRkZGRiIvPgogICAgPHBhdGggZD0iTTIyMiAxMTAgTDI1OCA3NiBMMjk0IDExMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjE2IiBzdHJva2UtbGluZWNhcD0ic3F1YXJlIiBzdHJva2UtbGluZWpvaW49Im1pdGVyIi8+CiAgICA8cGF0aCBkPSJNMjQ0IDk2IEgyNzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0ic3F1YXJlIi8+CiAgPC9nPgogIDx0ZXh0IHg9IjI2NCIgeT0iMTUyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsICdMaWJlcmF0aW9uIFNhbnMnLCAnRGVqYVZ1IFNhbnMnLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDQiIGZvbnQtd2VpZ2h0PSI4MDAiIGxldHRlci1zcGFjaW5nPSI0IiBmaWxsPSIjRkZGRkZGIj5TQUlOREhBVjwvdGV4dD4KICA8dGV4dCB4PSIyNjYiIHk9IjE5NCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCAnTGliZXJhdGlvbiBTYW5zJywgJ0RlamFWdSBTYW5zJywgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjIzIiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iMTIiIGZpbGw9IiNENEFGMzciPkFSRU5BPC90ZXh0Pgo8L3N2Zz4K" alt="SAINDHAV ARENA" width="520" height="240"/></a><button class="back" onclick="closeGame()">← Back to Games</button><span class="pThumb" id="pThumb" aria-hidden="true"></span><h2 id="pTitle" style="margin:0;font-weight:900"></h2><span class="tag" id="pCat"></span><span class="tag off">▶ Plays in your browser</span></div>
   <div class="gameInfo"><p id="pDesc"></p><button class="pbtn" id="instrBtn" onclick="toggleInstructions()" aria-expanded="false" aria-haspopup="dialog">Instructions</button></div>
   <p id="pHow" style="color:var(--muted);line-height:1.5"></p><div id="modeBar" class="modeBar"></div><div id="onlineInfo"></div>
-  <div class="stage" id="stage"><div class="levelBar" id="levelBar" aria-live="polite"></div><div class="stageTop"><span class="score" id="pScore">Score: 0</span><button class="score" id="saveStatus" hidden onclick="retrySave()" aria-live="polite"></button><span class="pbtns"><button class="pbtn" id="pauseBtn" onclick="togglePause()">⏸ Pause</button><button class="pbtn" onclick="restartCurrent()">↻ Restart</button><button class="pbtn" id="soundBtn" onclick="toggleSound()" aria-label="Toggle sound">🔊 Sound: On</button><button class="pbtn" onclick="toggleFullscreen()">⛶ Fullscreen</button><button class="pbtn" onclick="closeGame()">✕ Exit</button></span></div><div class="statTiles" id="statTiles" role="group" aria-label="Live game stats"></div><div class="playViewport" id="playViewport"><div id="gameArea"></div><div id="startOverlay" class="overlay" hidden></div><div id="pauseOverlay" class="overlay" hidden><div class="ovCard"><h3>Paused</h3><p>Your game is frozen exactly where you left it.</p><div class="overlayBtns"><button class="btn primary" onclick="togglePause()">▶ Resume</button><button class="btn" onclick="restartCurrent()">↻ Restart</button><button class="btn" onclick="focusPanel('panelProgress')">Stats</button><button class="btn" id="soundBtn2" onclick="toggleSound()">🔊 Sound: On</button><button class="btn" onclick="closeGame()">Exit to Games</button></div></div></div><div id="instrOverlay" class="overlay" hidden role="dialog" aria-labelledby="instrTitle"><div class="ovCard"><div class="startArt" id="instrArt"></div><h3 id="instrTitle">How to play</h3><p id="instrDesc"></p><p class="startHow" id="instrHow"></p><div class="overlayBtns"><button class="btn primary" id="instrCloseBtn" onclick="closeInstructions()">Back to Game</button></div></div></div><div id="lvlOverlay" class="overlay" hidden role="dialog" aria-labelledby="lvlTitle"><div class="ovCard"><p class="lvlBig" id="lvlBig">Level Complete!</p><h3 id="lvlTitle">Level Complete</h3><p id="lvlText"></p><div class="overlayBtns"><button class="btn primary" id="lvlNextBtn" onclick="nextLevel()">Continue</button><button class="btn" id="lvlRetryBtn" onclick="retryLevel()">↻ Retry Level</button><button class="btn" onclick="closeGame()">Back to Games</button></div></div></div></div><div class="msg" id="pMsg"></div><div id="endBar" hidden><span id="endText"></span><span class="endBtns"><button class="pbtn goldBtn" onclick="restartCurrent()">↻ Play Again</button><button class="pbtn" onclick="closeGame()">Back to Games</button></span></div><div class="controls" id="gameControls"></div><div class="panelGrid" id="panelGrid">
+  <div class="stage" id="stage"><div class="levelBar" id="levelBar" aria-live="polite"></div><div class="stageTop"><span class="score" id="pScore">Score: 0</span><button class="score" id="saveStatus" hidden onclick="retrySave()" aria-live="polite"></button><span class="pbtns"><button class="pbtn" id="pauseBtn" onclick="togglePause()">⏸ Pause</button><button class="pbtn" onclick="restartCurrent()">↻ Restart</button><button class="pbtn" id="soundBtn" onclick="toggleSound()" aria-label="Toggle sound">🔊 Sound: On</button><button class="pbtn" onclick="toggleFullscreen()">⛶ Fullscreen</button><button class="pbtn" onclick="closeGame()">✕ Exit</button></span></div><div class="statTiles" id="statTiles" role="group" aria-label="Live game stats"></div><div id="liveStatus" role="status" aria-live="polite" aria-label="What is happening in the game right now"><span id="lsMain">Ready</span><span id="lsMeta"></span></div><div class="playViewport" id="playViewport"><div id="gameArea"></div><div id="startOverlay" class="overlay" hidden></div><div id="pauseOverlay" class="overlay" hidden><div class="ovCard"><h3>Paused</h3><p>Your game is frozen exactly where you left it.</p><div class="overlayBtns"><button class="btn primary" onclick="togglePause()">▶ Resume</button><button class="btn" onclick="restartCurrent()">↻ Restart</button><button class="btn" onclick="focusPanel('panelProgress')">Stats</button><button class="btn" id="soundBtn2" onclick="toggleSound()">🔊 Sound: On</button><button class="btn" onclick="closeGame()">Exit to Games</button></div></div></div><div id="instrOverlay" class="overlay" hidden role="dialog" aria-labelledby="instrTitle"><div class="ovCard"><div class="startArt" id="instrArt"></div><h3 id="instrTitle">How to play</h3><p id="instrDesc"></p><p class="startHow" id="instrHow"></p><div class="overlayBtns"><button class="btn primary" id="instrCloseBtn" onclick="closeInstructions()">Back to Game</button></div></div></div><div id="lvlOverlay" class="overlay" hidden role="dialog" aria-labelledby="lvlTitle"><div class="ovCard"><p class="lvlBig" id="lvlBig">Level Complete!</p><h3 id="lvlTitle">Level Complete</h3><p id="lvlText"></p><div class="overlayBtns"><button class="btn primary" id="lvlNextBtn" onclick="nextLevel()">Continue</button><button class="btn" id="lvlRetryBtn" onclick="retryLevel()">↻ Retry Level</button><button class="btn" onclick="closeGame()">Back to Games</button></div></div></div><div id="resultOverlay" class="overlay" hidden role="dialog" aria-labelledby="resBig"><div class="ovCard"><p class="lvlBig resBig" id="resBig">You Win!</p><h3 id="resTitle">Game result</h3><p id="resReason"></p><p class="resStats" id="resStats"></p><div class="overlayBtns"><button class="btn primary" id="resPrimaryBtn" onclick="resultPrimary()">↻ Play Again</button><button class="btn" onclick="closeGame()">Back to Games</button></div></div></div></div><div class="msg" id="pMsg"></div><div id="endBar" hidden><span id="endText"></span><span class="endBtns"><button class="pbtn goldBtn" onclick="restartCurrent()">↻ Play Again</button><button class="pbtn" onclick="closeGame()">Back to Games</button></span></div><div class="controls" id="gameControls"></div><div class="panelGrid" id="panelGrid">
 <section class="gpanel" id="panelProgress" aria-label="Your progress in this game"><h4>Stats — your progress</h4><div class="miniTiles"><div class="tile bestTile"><span>Best score</span><b id="ppBest">—</b></div><div class="tile"><span>Attempts</span><b id="ppAttempts">0</b></div><div class="tile"><span>Won / done</span><b id="ppWins">0</b></div></div><div class="progTrack" role="img" aria-label="Share of attempts completed or won"><div class="progFill" id="ppFill"></div></div><p class="progNote" id="ppNote">Saved on this device for your current profile.</p></section>
 <section class="gpanel" id="panelOptions" aria-label="Game options"><h4>Options</h4><p class="optLbl">Sound</p><div class="optRow"><button class="pbtn" id="soundBtn3" onclick="toggleSound()">🔊 Sound: On</button><button class="pbtn" onclick="toggleFullscreen()">⛶ Fullscreen</button></div><p class="optLbl">Visual effects — saved to your profile</p><div class="optRow" id="panelFx"><button class="pbtn" data-fxv="high" onclick="setFx('high')">High</button><button class="pbtn" data-fxv="balanced" onclick="setFx('balanced')">Balanced</button><button class="pbtn" data-fxv="low" onclick="setFx('low')">Low</button></div></section>
 <section class="gpanel" id="panelHelp" aria-label="Help for this game"><h4>Help</h4><p id="panelHow"></p><div class="optRow"><button class="pbtn" onclick="toggleInstructions()">Show / hide instructions</button></div><p id="panelMeta" style="margin:0"></p></section>
@@ -965,9 +1001,25 @@ let scoreTween=null;
 function setScore(t){const el=document.getElementById('pScore');if(!el||el.textContent===t)return;renderStatTiles(t);const mO=el.textContent.match(/^(.*?)(\d+)([^\d]*)$/),mN=t.match(/^(.*?)(\d+)([^\d]*)$/);
   if(!REDUCED&&mO&&mN&&mO[1]===mN[1]&&mO[3]===mN[3]){const from=+mO[2],to=+mN[2];if(scoreTween)cancelAnimationFrame(scoreTween);const t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/220);el.textContent=mN[1]+Math.round(from+(to-from)*k)+mN[3];if(k<1)scoreTween=requestAnimationFrame(step);else scoreTween=null};scoreTween=requestAnimationFrame(step)}
   else el.textContent=t;
-  el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');trackScore(t)}
+  el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');refreshLiveMeta();if(/to move|your turn|thinking/i.test(t))setLiveMain(t);trackScore(t)}
 function noteBest(id,v){if(BEST[id]===undefined||v>BEST[id]){BEST[id]=v;const pr=progRec(id);if(pr){pr.best_score=v;pr.updated_at=Date.now()}persistProfile()}}
-function setMsg(t,kind){const el=document.getElementById('pMsg');el.textContent=t;el.className='msg'+(t?' show':'')+(kind?' '+kind:'');const bar=document.getElementById('endBar');if(bar){if(t&&(kind==='win'||kind==='lose')){const bt=document.getElementById('endText');let extra='';if(current&&BEST[current.id]!==undefined)extra=' Best score: '+BEST[current.id]+'.';bt.textContent=t+extra;const fresh=bar.hidden;bar.hidden=false;if(typeof refreshGamePanels==='function')refreshGamePanels();if(kind==='win'){if(fresh&&current){const pr=progRec(current.id);if(pr){pr.completions++;pr.updated_at=Date.now();if(BEST[current.id]!==undefined)pr.best_score=BEST[current.id];persistProfile()}}sfxWin()}else sfxLose()}else if(!t){bar.hidden=true}}campaignMsgHook(t,kind)}
+let END_COUNTED=false;
+function isDrawText(t){const s=String(t||'');return /^\s*draw\b/i.test(s)||/\ba draw\b/i.test(s)||/\bdraw\s+at\b/i.test(s)||/\bdraw\s+\d/i.test(s)||/\bdraw!/i.test(s)}
+function setLiveMain(t){const el=document.getElementById('lsMain');if(el&&t)el.textContent=t}
+function refreshLiveMeta(){const m=document.getElementById('lsMeta');if(!m||!current)return;const sc=document.getElementById('pScore');let s='Level '+LEVEL+' • '+diffName()+' • '+(sc?sc.textContent:'');try{const o=objFor(current.id);if(o.type==='target')s+=' • Progress: '+LVL_SCORE+' / '+curTarget()+' '+o.k;else if(o.type==='invert')s+=' • Target: '+curTarget()+' ms or faster';else if(winsNeeded()>1)s+=' • Wins: '+WINS_THIS_LEVEL+'/'+winsNeeded()}catch(e){}m.textContent=s}
+function setMsg(t,kind){const el=document.getElementById('pMsg');if(el){el.textContent=t;el.className='msg'+(t?' show':'')+(kind?' '+kind:'')}
+  const draw=isDrawText(t);
+  const bar=document.getElementById('endBar');if(bar)bar.hidden=true;
+  if(t&&current){
+    if(draw){sfxClick()}
+    else if(kind==='win'){if(!END_COUNTED){END_COUNTED=true;const pr=progRec(current.id);if(pr){pr.completions++;pr.updated_at=Date.now();if(BEST[current.id]!==undefined)pr.best_score=BEST[current.id];persistProfile()}}if(typeof refreshGamePanels==='function')refreshGamePanels();sfxWin()}
+    else if(kind==='lose'){sfxLose()}
+  }
+  campaignMsgHook(t,draw?'draw':kind);
+  handleResult(t,kind,draw);
+  if(t&&!RESULT_OPEN)setLiveMain(t);
+  else if(!t&&current)setLiveMain('Playing — '+objectiveText().replace(/^Objective:\s*/,''));
+}
 let SOUND=true,ACTX=null;
 function tone(f,d,type,delay){if(!SOUND)return;try{ACTX=ACTX||new (window.AudioContext||window.webkitAudioContext)();if(ACTX.state==='suspended')ACTX.resume();const o=ACTX.createOscillator(),g=ACTX.createGain();o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(.08,ACTX.currentTime+(delay||0));g.gain.exponentialRampToValueAtTime(.001,ACTX.currentTime+(delay||0)+d);o.connect(g);g.connect(ACTX.destination);o.start(ACTX.currentTime+(delay||0));o.stop(ACTX.currentTime+(delay||0)+d)}catch(e){}}
 function sfxWin(){tone(523,.12,'sine',0);tone(659,.12,'sine',.1);tone(784,.2,'sine',.2)}
@@ -996,7 +1048,7 @@ function thumbSVG(g){const h=idHash(g.id);const shapes=['circle','rect','tri','b
   return '<svg viewBox="0 0 200 120" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration for '+g.name+'" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="120" fill="#140D23"/><rect width="200" height="120" fill="'+g.bg+'" opacity="0.20"/>'+deco+'<circle cx="100" cy="62" r="27" fill="'+g.bg+'"/><text x="100" y="76" font-size="30" text-anchor="middle">'+g.icon+'</text></svg>'}
 function applyAccent(g){const pl=document.getElementById('player');if(!pl||!g)return;pl.style.setProperty('--ga',g.bg);pl.style.setProperty('--gai',accentInk(g.bg));const th=document.getElementById('pThumb');if(th)th.innerHTML=thumbSVG(g)}
 let lastTileText='';
-function renderStatTiles(t){if(t===lastTileText)return;lastTileText=t;const wrap=document.getElementById('statTiles');if(!wrap)return;const segs=String(t).split('•').map(x=>x.trim()).filter(Boolean).slice(0,4);if(segs.length<=1){wrap.innerHTML='';wrap.style.display='none';return}wrap.style.display='';
+function renderStatTiles(t){if(t===lastTileText)return;lastTileText=t;const wrap=document.getElementById('statTiles');if(!wrap)return;const segs=String(t).split('•').map(x=>x.trim()).filter(Boolean).slice(0,4);wrap.style.display='';if(segs.length<=1){const s0=segs[0]||'Score: 0';const ci0=s0.indexOf(':');wrap.innerHTML=(ci0>0&&ci0<26)?'<div class="tile"><span>'+s0.slice(0,ci0)+'</span><b>'+s0.slice(ci0+1).trim()+'</b></div>':'<div class="tile"><span>Live</span><b>'+s0+'</b></div>';return}
   let html=segs.map(seg=>{const ci=seg.indexOf(':');if(ci>0&&ci<26)return '<div class="tile"><span>'+seg.slice(0,ci)+'</span><b>'+seg.slice(ci+1).trim()+'</b></div>';return '<div class="tile"><span>Live</span><b>'+seg+'</b></div>'}).join('');
   if(current&&BEST[current.id]!==undefined)html+='<div class="tile bestTile"><span>Best</span><b>'+BEST[current.id]+'</b></div>';
   wrap.innerHTML=html||'<div class="tile"><span>Live</span><b>Ready</b></div>'}
@@ -1017,7 +1069,7 @@ function refreshGamePanels(){if(!current)return;const pr=progRec(current.id);con
    Hard asks for more round wins. Completing a level's objective opens the
    Level Complete screen; Continue starts the next level with the run score
    carried over. Per-game targets below use each game's own score format. */
-let DIFF='medium',LEVEL=1,START_LEVEL=1,RUN_SCORE=0,LEVEL_DONE=false,LVL_BLOCK=false,WINS_THIS_LEVEL=0,LVL_SCORE=0;
+let DIFF='medium',LEVEL=1,START_LEVEL=1,RUN_SCORE=0,LEVEL_DONE=false,LVL_BLOCK=false,WINS_THIS_LEVEL=0,LVL_SCORE=0,LVL_COMPLETED=false;
 const LVL_TARGET={flap:{k:'Score',t:5},runner:{k:'Score',t:150},caveflyer:{k:'Score',t:100},coins:{k:'Score',t:40},stack:{k:'Height',t:8},tower:{k:'Height',t:15},math:{k:'Score',t:60},target:{k:'Score',t:150},drift:{k:'Drift points',t:150},merge:{k:'Score',t:1000},racer:{k:'Points',t:100},traffic:{k:'Points',t:100},highway:{k:'Points',t:100},obstacle:{k:'Points',t:100},blackjack:{k:'Points',t:1300},higherlower:{k:'Streak',t:5},simon:{k:'Round',t:5},towerdef:{k:'Wave',t:3},penalty:{k:'Goals',t:3}};
 const LVL_INVERT={reaction:{k:'Reaction',t:380}};
 const LVL_WINS={minigolf:3};
@@ -1029,21 +1081,111 @@ function diffName(){return DIFF==='easy'?'Easy':DIFF==='hard'?'Hard':'Medium'}
 function objectiveText(){if(!current)return'';const o=objFor(current.id);if(o.type==='target')return 'Objective: reach '+curTarget()+' '+o.k.toLowerCase()+' to complete Level '+LEVEL+'.';if(o.type==='invert')return 'Objective: react in '+curTarget()+' ms or faster to complete Level '+LEVEL+'.';const w=winsNeeded();return 'Objective: '+(w>1?('win '+w+' rounds or matches'):'win the round or match')+' to complete Level '+LEVEL+(playMode==='local'?' — in local multiplayer, progression is per match.':(AI_IDS.indexOf(current.id)>=0?' against the computer opponent.':' — a draw does not complete the level.'))}
 function paceMult(){if(!current)return 1;const cats=['Arcade','Action','Adventure','Racing','Platform','Sports','Casual'];if(cats.indexOf(current.cat)<0)return 1;const d=DIFF==='easy'?.85:DIFF==='hard'?1.15:1;return d*(1+Math.min(.4,(LEVEL-1)*.05))}
 function parseKeyScore(t,k){const s=String(t),i=s.indexOf(k+':');if(i<0)return null;const m=s.slice(i+k.length+1).match(/-?\d+/);return m?+m[0]:null}
-function updateLevelBar(){const bar=document.getElementById('levelBar');if(!bar||!current)return;bar.innerHTML='<span class="lvlBadge">Level '+LEVEL+'</span><span class="lvlMeta">Difficulty: <b>'+diffName()+'</b></span><span class="lvlMeta lvlObj">'+objectiveText()+'</span><span class="lvlMeta">Run score: <b>'+RUN_SCORE+'</b>'+(winsNeeded()>1?' • Wins: <b>'+WINS_THIS_LEVEL+'/'+winsNeeded()+'</b>':'')+'</span>'}
+function updateLevelBar(){const bar=document.getElementById('levelBar');if(!bar||!current)return;bar.innerHTML='<span class="lvlBadge">Level '+LEVEL+'</span><span class="lvlMeta">Difficulty: <b>'+diffName()+'</b></span><span class="lvlMeta lvlObj">'+objectiveText()+'</span><span class="lvlMeta">Run score: <b>'+RUN_SCORE+'</b>'+(winsNeeded()>1?' • Wins: <b>'+WINS_THIS_LEVEL+'/'+winsNeeded()+'</b>':'')+'</span>';refreshLiveMeta()}
 function setDiff(d){DIFF=d;showStart()}
-function trackScore(t){if(!current||LEVEL_DONE||LVL_BLOCK)return;const o=objFor(current.id);let v=null;if(o.type==='win'){const m=String(t).match(/-?\d+/);v=m?+m[0]:null}else v=parseKeyScore(t,o.k);if(v===null)return;LVL_SCORE=v;if(o.type==='target'&&v>=curTarget())levelComplete();else if(o.type==='invert'&&v>0&&v<=curTarget())levelComplete()}
+function trackScore(t){if(!current||LEVEL_DONE||LVL_BLOCK)return;const o=objFor(current.id);let v=null;if(o.type==='win'){const m=String(t).match(/-?\d+/);v=m?+m[0]:null}else v=parseKeyScore(t,o.k);if(v===null)return;LVL_SCORE=v;refreshLiveMeta();if(o.type==='target'&&v>=curTarget())levelComplete();else if(o.type==='invert'&&v>0&&v<=curTarget())levelComplete()}
 function hideLvl(){const ov=document.getElementById('lvlOverlay');if(ov)ov.hidden=true;const nb=document.getElementById('lvlNextBtn');if(nb)nb.hidden=false}
-function levelComplete(){if(LEVEL_DONE||!current)return;LEVEL_DONE=true;LVL_BLOCK=true;const pr=progRec(current.id);if(pr){pr.highest_level_completed=Math.max(pr.highest_level_completed||0,LEVEL);pr.updated_at=Date.now();persistProfile()}const eb=document.getElementById('endBar');if(eb)eb.hidden=true;const big=document.getElementById('lvlBig');if(big)big.textContent='Level '+LEVEL+' Complete!';const ti=document.getElementById('lvlTitle');if(ti)ti.textContent=current.name+' — Level '+LEVEL+' cleared';const tx=document.getElementById('lvlText');if(tx)tx.textContent='Score this level: '+LVL_SCORE+' • Run score after this level: '+(RUN_SCORE+LVL_SCORE)+'. Level '+(LEVEL+1)+' steps the challenge up — your run score carries over.';const nb=document.getElementById('lvlNextBtn');if(nb){nb.hidden=false;nb.textContent='▶ Continue to Level '+(LEVEL+1)}const ov=document.getElementById('lvlOverlay');if(ov)ov.hidden=false;sfxWin();celebrate();updateLevelBar()}
-function showGameOver(t){if(!current)return;LVL_BLOCK=true;const eb=document.getElementById('endBar');if(eb)eb.hidden=true;const big=document.getElementById('lvlBig');if(big)big.textContent='Game Over';const ti=document.getElementById('lvlTitle');if(ti)ti.textContent=current.name;const tx=document.getElementById('lvlText');if(tx)tx.textContent=(t?t+' ':'')+'Final score: '+LVL_SCORE+' • Highest level reached: '+LEVEL+' • Run score: '+(RUN_SCORE+LVL_SCORE)+'.';const nb=document.getElementById('lvlNextBtn');if(nb)nb.hidden=true;const ov=document.getElementById('lvlOverlay');if(ov)ov.hidden=false;updateLevelBar()}
-function nextLevel(){if(!current)return;RUN_SCORE+=LVL_SCORE;LEVEL++;WINS_THIS_LEVEL=0;LEVEL_DONE=false;LVL_BLOCK=false;hideLvl();const pr=progRec(current.id);if(pr){pr.current_level=LEVEL;pr.highest_level_unlocked=Math.max(pr.highest_level_unlocked||1,LEVEL);pr.updated_at=Date.now();persistProfile()}PAUSED=false;syncPauseUI();startGame(current.id)}
+function levelComplete(){if(LEVEL_DONE||!current)return;LEVEL_DONE=true;LVL_BLOCK=true;LVL_COMPLETED=true;hideResult();const pr=progRec(current.id);if(pr){pr.highest_level_completed=Math.max(pr.highest_level_completed||0,LEVEL);pr.updated_at=Date.now();persistProfile()}const eb=document.getElementById('endBar');if(eb)eb.hidden=true;const big=document.getElementById('lvlBig');if(big)big.textContent='Level '+LEVEL+' Complete!';const ti=document.getElementById('lvlTitle');if(ti)ti.textContent=current.name+' — Level '+LEVEL+' cleared';const tx=document.getElementById('lvlText');if(tx)tx.textContent='Score this level: '+LVL_SCORE+' • Run score after this level: '+(RUN_SCORE+LVL_SCORE)+'. Level '+(LEVEL+1)+' steps the challenge up — your run score carries over.';const nb=document.getElementById('lvlNextBtn');if(nb){nb.hidden=false;nb.textContent='▶ Continue to Level '+(LEVEL+1)}const ov=document.getElementById('lvlOverlay');if(ov)ov.hidden=false;sfxWin();celebrate();updateLevelBar()}
+function showGameOver(t){if(!current)return;LVL_BLOCK=true;LVL_COMPLETED=false;hideResult();const eb=document.getElementById('endBar');if(eb)eb.hidden=true;const big=document.getElementById('lvlBig');if(big)big.textContent='Game Over';const ti=document.getElementById('lvlTitle');if(ti)ti.textContent=current.name;const tx=document.getElementById('lvlText');if(tx)tx.textContent=(t?t+' ':'')+'Final score: '+LVL_SCORE+' • Highest level reached: '+LEVEL+' • Run score: '+(RUN_SCORE+LVL_SCORE)+'.';const nb=document.getElementById('lvlNextBtn');if(nb)nb.hidden=true;const ov=document.getElementById('lvlOverlay');if(ov)ov.hidden=false;updateLevelBar()}
+/* ===== Clear win / lose / draw / game-over result state (shared layer) =====
+   Root cause of the "game just stays the same" report: engines report their
+   ending through setMsg, but many endings carried no win/lose kind at all
+   (every "Draw!", timed-out and crashed runs, quiz completions), and the
+   only result UI was a thin bar under the play area — so the board looked
+   unchanged and kept accepting input. This layer classifies the engine's
+   own message (its rules and wording are untouched), shows one prominent
+   result overlay inside the game area with the reason, final score, level
+   reached and best score, freezes gameplay timers, and blocks board /
+   control input until the player picks Play Again, Next Round or
+   Back to Games. Round-by-round messages that are NOT the end of a game
+   (blackjack hands, quiz answers, invalid-move warnings, penalty shots)
+   are deliberately not treated as results. */
+let RESULT_OPEN=false,RES_MODE='again';
+const TERM_RE=/press restart|restart to|restart for|press start to retry|try again|final score|final catch|game over|out of (time|tries|guesses|moves|points)|crashed|destroyed|landed!|reached the bottom|base destroyed|base breached|stuck at|no line this time|reached square 30|fleet was sunk|emptied its hand|all out for|streak ends|innings over|total pins|you fell|tripped!|ball missed|three coins missed|too close to the road|cpu wins|computer wins|connected four|took the last stick|king was captured|that was a bomb/i;
+function classifyOutcome(t,kind){
+  const s=String(t||'');
+  if(kind==='win'){
+    if(current.id==='blackjack')return null;
+    if(current.id==='minigolf'&&!/course complete/i.test(s))return null;
+    if(playMode!=='local'&&/player 2 wins|cpu wins|computer wins/i.test(s))return 'lose';
+    return 'win';
+  }
+  if(kind==='lose'){
+    if(current.id==='blackjack')return /out of points/i.test(s)?'over':null;
+    if(current.id==='higherlower')return /streak ends/i.test(s)?'over':null;
+    if(!TERM_RE.test(s))return null;
+    if(playMode!=='local'&&/wins|connected four|took the last stick|king was captured|emptied its hand/i.test(s))return 'lose';
+    return 'over';
+  }
+  if(TERM_RE.test(s)){
+    if(playMode!=='local'&&/cpu wins|computer wins|player 2 wins/i.test(s))return 'lose';
+    if(/you win/i.test(s))return 'win';
+    return 'over';
+  }
+  return null;
+}
+function handleResult(t,kind,draw){
+  if(!current||!t||RESULT_OPEN)return;
+  const lv=document.getElementById('lvlOverlay');if(lv&&!lv.hidden)return;
+  const outcome=draw?'draw':classifyOutcome(t,kind);
+  if(!outcome)return;
+  showResult(outcome,t);
+}
+function showResult(outcome,reason){
+  if(!current)return;
+  RESULT_OPEN=true;LVL_BLOCK=true;
+  const big=document.getElementById('resBig'),ti=document.getElementById('resTitle'),rs=document.getElementById('resReason'),st=document.getElementById('resStats'),pb=document.getElementById('resPrimaryBtn');
+  const roundWin=(outcome==='win'&&objFor(current.id).type==='win'&&WINS_THIS_LEVEL>0&&WINS_THIS_LEVEL<winsNeeded());
+  RES_MODE=roundWin?'round':'again';
+  let head;
+  if(outcome==='draw')head='Draw';
+  else if(outcome==='win')head=roundWin?'Round Won!':(playMode==='local'?'Winner!':'You Win!');
+  else if(outcome==='lose')head=playMode==='local'?'Winner!':'You Lose';
+  else head=/complete|finished/i.test(reason)?'Finished!':(/time|final catch/i.test(reason)?'Time Up!':'Game Over');
+  if(big){big.textContent=head;big.className='lvlBig resBig '+outcome}
+  if(ti)ti.textContent=current.name+' — '+(outcome==='draw'?'it is a draw':outcome==='win'?'you won':outcome==='lose'?'you lost':'game over');
+  if(rs)rs.textContent=reason;
+  if(st){const sc=document.getElementById('pScore');const scT=sc?sc.textContent:'';st.textContent=(scT?scT+' • ':'')+'Level reached: '+LEVEL+(roundWin?' • Wins this level: '+WINS_THIS_LEVEL+'/'+winsNeeded():'')+(BEST[current.id]!==undefined?' • Best score: '+BEST[current.id]:'')}
+  if(pb)pb.textContent=roundWin?'▶ Next Round':'↻ Play Again';
+  const ov=document.getElementById('resultOverlay');if(ov)ov.hidden=false;
+  setLiveMain(head+' — '+reason);
+  if(typeof refreshGamePanels==='function')refreshGamePanels();
+  if(pb)pb.focus({preventScroll:true});
+}
+function hideResult(){RESULT_OPEN=false;const ov=document.getElementById('resultOverlay');if(ov)ov.hidden=true}
+function resultPrimary(){if(!current)return;const round=RES_MODE==='round';hideResult();if(round){LVL_BLOCK=false;startGame(current.id)}else restartCurrent()}
+function resultInputGuard(e){
+  if(!RESULT_OPEN&&!LVL_BLOCK)return;
+  if(!current)return;
+  const tg=e.target;if(!tg||!tg.closest)return;
+  if(tg.closest('.overlay'))return;
+  if(tg.closest('#gameArea')||tg.closest('#gameControls')){e.preventDefault();e.stopPropagation()}
+}
+document.addEventListener('pointerdown',resultInputGuard,true);
+document.addEventListener('click',resultInputGuard,true);
+document.addEventListener('touchstart',resultInputGuard,{capture:true,passive:false});
+function nextLevel(){if(!current||!LVL_COMPLETED)return;LVL_COMPLETED=false;RUN_SCORE+=LVL_SCORE;LEVEL++;WINS_THIS_LEVEL=0;LEVEL_DONE=false;LVL_BLOCK=false;hideLvl();const pr=progRec(current.id);if(pr){pr.current_level=LEVEL;pr.highest_level_unlocked=Math.max(pr.highest_level_unlocked||1,LEVEL);pr.updated_at=Date.now();persistProfile()}PAUSED=false;syncPauseUI();startGame(current.id)}
 function retryLevel(){if(!current)return;LEVEL_DONE=false;LVL_BLOCK=false;WINS_THIS_LEVEL=0;hideLvl();PAUSED=false;syncPauseUI();startGame(current.id)}
-function campaignMsgHook(t,kind){if(!current||!t||LEVEL_DONE)return;if(kind==='win'){WINS_THIS_LEVEL++;if(WINS_THIS_LEVEL>=winsNeeded())levelComplete();else{showToast('Round won — '+WINS_THIS_LEVEL+' of '+winsNeeded()+' for Level '+LEVEL);updateLevelBar()}}else if(kind==='lose'&&TERMINAL_LOSE.indexOf(current.id)>=0){LEVEL_DONE=true;showGameOver(t)}}
-function showStart(){if(!current)return;clearFx();hideInstr();hideLvl();LVL_BLOCK=false;LEVEL=START_LEVEL;PAUSED=false;syncPauseUI();const stgEl=document.getElementById('stage');if(stgEl)stgEl.classList.add('setupMode');const g=current;document.getElementById('gameArea').innerHTML='';document.getElementById('gameControls').innerHTML='';setMsg('');setScore('Score: 0');const ov=document.getElementById('startOverlay');const best=(BEST[g.id]!==undefined)?'<p class="startBest">Best score: '+BEST[g.id]+'</p>':'';const prO=progRec(g.id);const prog=(prO&&prO.attempts>0)?'<p class="startHow">Saved on this device — Attempts: '+prO.attempts+' • Completed/Won: '+prO.completions+(prO.last_played_at?' • Last played '+new Date(prO.last_played_at).toLocaleDateString():'')+'</p>':'';ov.innerHTML='<div class="ovCard"><div class="startArt" style="background:'+g.bg+'">'+g.icon+'</div><h3>'+g.name+'</h3><p>'+g.desc+'</p><p class="startHow">'+(playMode==='local'?(LOCAL_HOW[g.id]||g.how):g.how)+'</p>'+best+prog+'<div class="diffRow" role="group" aria-label="Difficulty"><button class="diffBtn'+(DIFF==='easy'?' sel':'')+'" onclick="setDiff(\'easy\')">Easy<small>Slower pace, gentler targets</small></button><button class="diffBtn'+(DIFF==='medium'?' sel':'')+'" onclick="setDiff(\'medium\')">Medium<small>Balanced default</small></button><button class="diffBtn'+(DIFF==='hard'?' sel':'')+'" onclick="setDiff(\'hard\')">Hard<small>Faster pace, higher targets</small></button></div><div class="setupRow"><label for="startLvlSel">Starting level</label><select id="startLvlSel" onchange="START_LEVEL=+this.value">'+[1,2,3,4,5,6,7,8,9,10].map(function(n){return '<option value="'+n+'"'+(START_LEVEL===n?' selected':'')+'>Level '+n+'</option>'}).join('')+'</select></div><p class="startHow">'+objectiveText()+'</p><div class="overlayBtns"><button class="btn primary" onclick="beginPlay()">\u25B6 Start Game</button></div></div>';ov.hidden=false;lastTileText='';renderStatTiles('Score: 0');refreshGamePanels();updateLevelBar();renderRelated(g)}
-function beginPlay(){const ov=document.getElementById('startOverlay');if(ov)ov.hidden=true;sfxClick();LEVEL=START_LEVEL;RUN_SCORE=0;WINS_THIS_LEVEL=0;LEVEL_DONE=false;LVL_BLOCK=false;hideLvl();if(current)startGame(current.id)}
+function campaignMsgHook(t,kind){if(!current||!t||LEVEL_DONE||kind==='draw')return;if(kind==='win'){WINS_THIS_LEVEL++;if(WINS_THIS_LEVEL>=winsNeeded())levelComplete();else{showToast('Round won — '+WINS_THIS_LEVEL+' of '+winsNeeded()+' for Level '+LEVEL);updateLevelBar()}}else if(kind==='lose'&&TERMINAL_LOSE.indexOf(current.id)>=0){LEVEL_DONE=true;showGameOver(t)}}
+function showStart(){if(!current)return;unlockPlayView();clearFx();hideInstr();hideResult();hideLvl();LVL_BLOCK=false;setLiveMain('Set up your game — pick a difficulty and a starting level, then press Start Game.');LEVEL=START_LEVEL;PAUSED=false;syncPauseUI();const stgEl=document.getElementById('stage');if(stgEl)stgEl.classList.add('setupMode');const g=current;document.getElementById('gameArea').innerHTML='';document.getElementById('gameControls').innerHTML='';setMsg('');setScore('Score: 0');const ov=document.getElementById('startOverlay');const best=(BEST[g.id]!==undefined)?'<p class="startBest">Best score: '+BEST[g.id]+'</p>':'';const prO=progRec(g.id);const prog=(prO&&prO.attempts>0)?'<p class="startHow">Saved on this device — Attempts: '+prO.attempts+' • Completed/Won: '+prO.completions+(prO.last_played_at?' • Last played '+new Date(prO.last_played_at).toLocaleDateString():'')+'</p>':'';ov.innerHTML='<div class="ovCard"><div class="startArt" style="background:'+g.bg+'">'+g.icon+'</div><h3>'+g.name+'</h3><p>'+g.desc+'</p><p class="startHow">'+(playMode==='local'?(LOCAL_HOW[g.id]||g.how):g.how)+'</p>'+best+prog+'<div class="diffRow" role="group" aria-label="Difficulty"><button class="diffBtn'+(DIFF==='easy'?' sel':'')+'" onclick="setDiff(\'easy\')">Easy<small>Slower pace, gentler targets</small></button><button class="diffBtn'+(DIFF==='medium'?' sel':'')+'" onclick="setDiff(\'medium\')">Medium<small>Balanced default</small></button><button class="diffBtn'+(DIFF==='hard'?' sel':'')+'" onclick="setDiff(\'hard\')">Hard<small>Faster pace, higher targets</small></button></div><div class="setupRow"><label for="startLvlSel">Starting level</label><select id="startLvlSel" onchange="START_LEVEL=+this.value">'+[1,2,3,4,5,6,7,8,9,10].map(function(n){return '<option value="'+n+'"'+(START_LEVEL===n?' selected':'')+'>Level '+n+'</option>'}).join('')+'</select></div><p class="startHow">'+objectiveText()+'</p><div class="overlayBtns"><button class="btn primary" onclick="beginPlay()">\u25B6 Start Game</button></div></div>';ov.hidden=false;lastTileText='';renderStatTiles('Score: 0');refreshGamePanels();updateLevelBar();renderRelated(g)}
+function beginPlay(){const ov=document.getElementById('startOverlay');if(ov)ov.hidden=true;sfxClick();LEVEL=START_LEVEL;RUN_SCORE=0;WINS_THIS_LEVEL=0;LEVEL_DONE=false;LVL_BLOCK=false;hideLvl();if(current)startGame(current.id);lockPlayView()}
+function lockPlayView(){document.body.classList.add('playing');const st=document.getElementById('stage');if(st)st.scrollIntoView({block:'start',behavior:'auto'})}
+function unlockPlayView(){document.body.classList.remove('playing')}
 function renderRelated(g){const title=document.getElementById('relatedTitle');const grid=document.getElementById('relatedGrid');if(!grid)return;const rel=GAMES.filter(x=>x.cat===g.cat&&x.id!==g.id).sort((a,b)=>b.hot-a.hot).slice(0,4);title.textContent=rel.length?('More '+g.cat+' games'):'';grid.innerHTML=rel.map(x=>'<article class="recentCard"><button class="recentMain" onclick="openGame(\''+x.id+'\')"><span class="recentArt" style="background:'+x.bg+'">'+x.icon+'</span><span><b>'+x.name+'</b><span>'+x.cat+'</span></span></button></article>').join('')}
 function syncPauseUI(){const b=document.getElementById('pauseBtn');if(b){b.textContent=PAUSED?'\u25B6 Resume':'\u23F8 Pause';b.classList.toggle('on',PAUSED)}const po=document.getElementById('pauseOverlay');if(po)po.hidden=!PAUSED}
 function autoPause(){const pl=document.getElementById('player');if(current&&pl&&pl.classList.contains('open')&&!PAUSED){const so=document.getElementById('startOverlay');if(so&&!so.hidden)return;PAUSED=true;syncPauseUI()}}
 window.addEventListener('blur',autoPause);document.addEventListener('visibilitychange',()=>{if(document.hidden)autoPause()});
+/* ===== Play-screen lock: game inputs must never move the page =====
+   Root cause of the "whole screen moves while playing" report: many game
+   engines listen for Arrow/WASD/Space without preventDefault (so the
+   browser scrolled the page), board grids had no touch-action (so a
+   touch drag scrolled the page under the finger), and stat tiles were
+   display:none-toggled as the score format changed (pushing the board).
+   These guards live in the shared player, so every game inherits them;
+   they are active only while body.playing is set (Start -> Exit), and
+   never block typing in inputs or activating focused controls. */
+document.addEventListener('keydown',function(e){if(!document.body.classList.contains('playing'))return;const tg=e.target;if(!tg||tg.tagName==='INPUT'||tg.tagName==='TEXTAREA'||tg.tagName==='SELECT'||tg.isContentEditable)return;if((RESULT_OPEN||LVL_BLOCK)&&current&&tg.tagName!=='BUTTON'&&tg.tagName!=='A'&&e.key!=='Tab'&&e.key!=='Escape'){e.preventDefault();e.stopPropagation();return}const k=e.key;if(k==='ArrowUp'||k==='ArrowDown'||k==='ArrowLeft'||k==='ArrowRight'){e.preventDefault()}else if((e.code==='Space'||k===' ')&&tg.tagName!=='BUTTON'&&tg.tagName!=='A'){e.preventDefault()}else if((k==='w'||k==='a'||k==='s'||k==='d'||k==='W'||k==='A'||k==='S'||k==='D')&&tg.tagName==='BODY'){e.preventDefault()}},true);
+(function(){const pv=document.getElementById('playViewport');if(!pv)return;pv.addEventListener('touchmove',function(e){if(!document.body.classList.contains('playing'))return;if(e.target.closest&&e.target.closest('.overlay'))return;e.preventDefault()},{passive:false});pv.addEventListener('wheel',function(e){if(!document.body.classList.contains('playing'))return;if(e.target.closest&&e.target.closest('.overlay'))return;e.preventDefault()},{passive:false})})();
 const LOCAL_IDS=['ttt','connect4','reversi','chess','checkers','mancala','dotsboxes','nim','memory','pong','tabletennis','ludo','carrom','airhockey'];
 const MAXP={ludo:4,carrom:2,airhockey:2};
 const AI_IDS=['ttt','connect4','reversi','chess','checkers','mancala','dotsboxes','nim','pong','tabletennis','ludo','carrom','airhockey','tankduel','subhunt','warcards','gofish','matchcards','dicerace'];
@@ -1144,9 +1286,9 @@ function openGame(id){
   const show=()=>{home.classList.add('hide');home.classList.remove('page-out');hideAllViews();player.classList.add('open');player.classList.remove('page-in');void player.offsetWidth;player.classList.add('page-in');window.scrollTo({top:0,behavior:'auto'});showStart()};
   if(REDUCED){show()}else{home.classList.add('page-out');setTimeout(show,150)}
 }
-function closeGame(){const stgEl3=document.getElementById('stage');if(stgEl3)stgEl3.classList.remove('setupMode');persistProfile(true);clearFx();hideInstr();hideLvl();LVL_BLOCK=false;LEVEL_DONE=false;PAUSED=false;syncPauseUI();current=null;const so=document.getElementById('startOverlay');if(so)so.hidden=true;try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}const home=document.getElementById('home'),player=document.getElementById('player');player.classList.remove('open','page-in');if(gameReturn&&gameReturn!=='home'){openView(gameReturn);return}home.classList.remove('hide');home.classList.remove('page-in');void home.offsetWidth;home.classList.add('page-in');window.scrollTo({top:0,behavior:'auto'})}
-function restartCurrent(){hideInstr();hideLvl();LVL_BLOCK=false;LEVEL_DONE=false;WINS_THIS_LEVEL=0;PAUSED=false;syncPauseUI();const so=document.getElementById('startOverlay');if(so)so.hidden=true;const eb=document.getElementById('endBar');if(eb)eb.hidden=true;if(current)startGame(current.id);else if(restartFn)restartFn()}
-function startGame(id){const stgEl2=document.getElementById('stage');if(stgEl2)stgEl2.classList.remove('setupMode');clearFx();PAUSED=false;syncPauseUI();LEVEL_DONE=false;LVL_BLOCK=false;LVL_SCORE=0;hideLvl();updateLevelBar();const eb2=document.getElementById('endBar');if(eb2)eb2.hidden=true;document.getElementById('pauseBtn').textContent='⏸ Pause';document.getElementById('gameControls').innerHTML='';setMsg('');const area=document.getElementById('gameArea');area.innerHTML='';const prS=progRec(id);if(prS){prS.attempts++;prS.current_level=LEVEL;prS.highest_level_unlocked=Math.max(prS.highest_level_unlocked||1,LEVEL);prS.last_played_at=Date.now();prS.updated_at=Date.now();persistProfile()}if(typeof refreshGamePanels==='function')refreshGamePanels();const fn=(playMode==='local'&&typeof REG_LOCAL!=='undefined'&&REG_LOCAL[id])?REG_LOCAL[id]:REG[id];if(fn){try{fn(area)}catch(e){if(window.console)console.error('SAINDHAV ARENA game failed to start:',id,e);area.innerHTML='<p class="hint">This game hit a snag starting. Your other games and progress are unaffected.</p><div class="controls"><button onclick="restartCurrent()">↻ Retry</button><button onclick="closeGame()">Back to Games</button></div>'}}restartFn=()=>startGame(id)}
+function closeGame(){unlockPlayView();const stgEl3=document.getElementById('stage');if(stgEl3)stgEl3.classList.remove('setupMode');persistProfile(true);clearFx();hideInstr();hideResult();hideLvl();LVL_BLOCK=false;LEVEL_DONE=false;PAUSED=false;syncPauseUI();current=null;const so=document.getElementById('startOverlay');if(so)so.hidden=true;try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}const home=document.getElementById('home'),player=document.getElementById('player');player.classList.remove('open','page-in');if(gameReturn&&gameReturn!=='home'){openView(gameReturn);return}home.classList.remove('hide');home.classList.remove('page-in');void home.offsetWidth;home.classList.add('page-in');window.scrollTo({top:0,behavior:'auto'})}
+function restartCurrent(){hideInstr();hideResult();hideLvl();LVL_BLOCK=false;LEVEL_DONE=false;WINS_THIS_LEVEL=0;PAUSED=false;syncPauseUI();const so=document.getElementById('startOverlay');if(so)so.hidden=true;const eb=document.getElementById('endBar');if(eb)eb.hidden=true;if(current)startGame(current.id);else if(restartFn)restartFn()}
+function startGame(id){document.body.classList.add('playing');const stgEl2=document.getElementById('stage');if(stgEl2)stgEl2.classList.remove('setupMode');clearFx();PAUSED=false;syncPauseUI();LEVEL_DONE=false;LVL_BLOCK=false;LVL_SCORE=0;END_COUNTED=false;LVL_COMPLETED=false;hideResult();hideLvl();updateLevelBar();const eb2=document.getElementById('endBar');if(eb2)eb2.hidden=true;document.getElementById('pauseBtn').textContent='⏸ Pause';document.getElementById('gameControls').innerHTML='';setMsg('');const area=document.getElementById('gameArea');area.innerHTML='';const prS=progRec(id);if(prS){prS.attempts++;prS.current_level=LEVEL;prS.highest_level_unlocked=Math.max(prS.highest_level_unlocked||1,LEVEL);prS.last_played_at=Date.now();prS.updated_at=Date.now();persistProfile()}if(typeof refreshGamePanels==='function')refreshGamePanels();const fn=(playMode==='local'&&typeof REG_LOCAL!=='undefined'&&REG_LOCAL[id])?REG_LOCAL[id]:REG[id];if(fn){try{fn(area)}catch(e){if(window.console)console.error('SAINDHAV ARENA game failed to start:',id,e);area.innerHTML='<p class="hint">This game hit a snag starting. Your other games and progress are unaffected.</p><div class="controls"><button onclick="restartCurrent()">↻ Retry</button><button onclick="closeGame()">Back to Games</button></div>'}}restartFn=()=>startGame(id)}
 function dpadHTML(){return `<div class="dpad"><button class="up" data-dir="up" aria-label="Up">↑</button><button class="left" data-dir="left" aria-label="Left">←</button><button class="down" data-dir="down" aria-label="Down">↓</button><button class="right" data-dir="right" aria-label="Right">→</button></div>`}
 function bindDpad(c,fn){c.querySelectorAll('[data-dir]').forEach(b=>{b.addEventListener('click',()=>fn(b.dataset.dir));b.addEventListener('touchstart',e=>{e.preventDefault();fn(b.dataset.dir)},{passive:false})})}
 function mkCanvas(area,w,h){area.innerHTML=`<canvas id="cv" width="${w}" height="${h}"></canvas>`;const cv=document.getElementById('cv');return[cv,cv.getContext('2d')]}
